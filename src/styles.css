@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import './assets/reset.css';
+@import './assets/css/font-awesome.css';
+* {
+  box-sizing: border-box;
+  font-family: '微软雅黑', 'Microsoft YaHei', '宋体', Tahoma, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+.pull-left {
+  float: left !important;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " ";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.center-block {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
