@@ -8,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   private isExpored = false;
   constructor() { }
+  //展开与收回下拉框
   dropFn(){
     this.isExpored = !this.isExpored
   }
+  //下拉框点击
   selectUserInfo(){
     this.isExpored = false;
   }
