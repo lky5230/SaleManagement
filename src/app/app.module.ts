@@ -8,7 +8,7 @@ import { RouterModule } from "@angular/router";
 import { SharedModule } from './shared/shared.module';
 //路由
 import { routing } from './app.route'
-
+//全局组件
 import { AppComponent } from './app.component';
 import { LeftNavComponent } from './left-nav/left-nav.component';
 

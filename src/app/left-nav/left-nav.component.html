@@ -1,31 +1,17 @@
 <div scroll class="left-nav">
   <ul>
-    <li class="active">1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>2</li>
-    <li>1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>1</li>
-    <li>1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>1</li>
-    <li>3</li>
-    <li>2</li>
-    <li>4</li>
+    <li [routerLinkActive]="'active'" [routerLink]="['']">
+      <span class="fa fa-shopping-basket fa-fw"></span>&nbsp; 销售列表
+    </li>
+    <li [routerLinkActive]="'active'" [routerLink]="['/1']">
+      <span class="fa fa-sun-o fa-fw"></span>&nbsp; 每日盈利统计
+    </li>
+    <li [routerLinkActive]="'active'" [routerLink]="['/2']">
+      <span class="fa fa-firefox fa-fw"></span>&nbsp; 月度销量展示
+    </li>
+    <li [routerLinkActive]="'active'" [routerLink]="['/3']">
+      <span class="fa fa-paw fa-fw"></span>&nbsp; 客户留言/反馈
+    </li>
+
   </ul>
 </div>
