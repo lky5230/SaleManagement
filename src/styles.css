@@ -2,6 +2,8 @@
 
 @import './assets/reset.css';
 @import './assets/css/font-awesome.css';
+@import './assets/css/perfect-scrollbar.css';
+
 * {
   box-sizing: border-box;
   font-family: '微软雅黑', 'Microsoft YaHei', '宋体', Tahoma, Helvetica, Arial, sans-serif;

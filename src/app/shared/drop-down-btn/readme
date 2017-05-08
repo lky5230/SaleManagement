@@ -1,0 +1,6 @@
+使用说明：
+父组件传入 aList = [{go:'/',info:'名称1'},{go:'/logout',info:'名称2'}]类型的数组
+
+<drop-down-btn [list]="aList">
+   <span class="name">选项名称</span>
+</drop-down-btn>

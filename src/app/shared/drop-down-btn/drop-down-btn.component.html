@@ -1,0 +1,10 @@
+<a class="drop-down-a" href="javascript:;" (click)="dropFn(); $event.stopPropagation()">
+  <ng-content select=".name"></ng-content>
+  &nbsp;
+  <span class="fa" [class.fa-caret-down]="!isExpored" [class.fa-caret-up]="isExpored"></span>
+</a>
+<ul [hidden]="!isExpored" class="drop-down">
+  <li *ngFor="let item of list" (click)="isExpored = false;$event.stopPropagation()">
+    <a (click)="goTo(item?.go)">{{item?.info}}</a>
+  </li>
+</ul>

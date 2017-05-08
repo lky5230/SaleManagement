@@ -1,0 +1,40 @@
+.drop-down {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 3;
+  width: 100%;
+  border: 1px solid #dedede
+}
+
+.drop-down li {}
+
+.drop-down a {
+  padding: 6px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.drop-down a:hover {
+  background-color: #c8caff;
+}
+
+a.drop-down-a {
+  display: block;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 100%;
+  line-height: 60px;
+  text-align: center;
+  text-decoration: none;
+}
+
+a.drop-down-a:hover {
+  background-color: #5a5ef8;
+}
+
+a.drop-down-a:hover .name,
+a.drop-down-a:hover .fa {
+  color: #fff !important;
+}

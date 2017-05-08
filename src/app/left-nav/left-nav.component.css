@@ -1,0 +1,38 @@
+.left-nav {
+  position: fixed;
+  top: 60px;
+  left: 0px;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+  width: 200px;
+}
+
+.left-nav ul {
+  border: 1px solid #ccc;
+}
+
+.left-nav li {
+  position: relative;
+  cursor: pointer;
+  padding: 12px 20px 12px 30px;
+}
+
+.left-nav li:after {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  content: ' ';
+  transition: all .3s;
+  height: 100%;
+  width: 4px;
+  background-color: transparent;
+  display: block;
+}
+
+.left-nav li:hover::after {
+  background-color: #d79e86;
+}
+
+.left-nav li.active:after {
+  background-color: #543426;
+}

@@ -6,16 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  private isExpored = false;
+  
+  //用户下拉框列表
+  private userList = [{go:'/',info:'设置'},{go:'/logout',info:'注销'}];
+  
   constructor() { }
-  //展开与收回下拉框
-  dropFn(){
-    this.isExpored = !this.isExpored
-  }
-  //下拉框点击
-  selectUserInfo(){
-    this.isExpored = false;
-  }
+ 
+  
   ngOnInit() {
   }
 

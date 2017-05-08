@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { HeaderComponent } from './header/header.component';
+import { DropDownBtnComponent } from './drop-down-btn/drop-down-btn.component';
+import { ScrollDirective } from './scroll.directive';
 
 
 @NgModule({
@@ -13,10 +15,14 @@ import { HeaderComponent } from './header/header.component';
     HttpModule
   ],
   exports:[
-    HeaderComponent
+    HeaderComponent,
+    DropDownBtnComponent,
+    ScrollDirective
   ],
   declarations: [
-    HeaderComponent
+    HeaderComponent,
+    DropDownBtnComponent,
+    ScrollDirective
   ]
 })
 export class SharedModule { }

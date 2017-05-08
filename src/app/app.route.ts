@@ -1,6 +1,6 @@
-
+import { DropDownBtnComponent } from './shared/drop-down-btn/drop-down-btn.component';
 
 
 export const routing = [
-    {path:'', component: 1}
+    {path:'',component: DropDownBtnComponent}
 ]

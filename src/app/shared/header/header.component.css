@@ -8,6 +8,10 @@
   padding-left: 20px;
   padding-right: 20px;
   background-color: #8f92ff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 .logo{
   padding-top: 10px;
@@ -21,25 +25,7 @@
   position: relative;
   height: 100%;
 }
-.drop-down{
-  position: absolute;
-  left: 0;
-  top: 100%;
-  z-index: 3;
-  width: 100%;
-  border: 1px solid #dedede
-}
-.drop-down li{
 
-}
-.drop-down a{
-  padding: 6px;
-  text-decoration: none;
-  display: block;
-}
-.drop-down a:hover{
-  background-color: #c8caff
-}
 .info a.info-a {
   display: block;
   padding-left: 20px;
