@@ -3,16 +3,16 @@
     <img src="./assets/img/logo.png" alt="">
   </div>
   <ul class="info clearfix pull-right">
-    <li class="pull-left">
-      
-      <drop-down-btn [list]="userList">
+    <li *ngIf="isLogin" class="pull-left">
+
+      <drop-down-btn (dropDownClick)="aClikc($event)" [list]="userList">
         <span class="name">XXX</span>
       </drop-down-btn>
 
     </li>
-    <li class="pull-left"><a class="info-a" href="#">登录</a></li>
-    <li class="pull-left"><a class="info-a" href="#">注册</a></li>
-    <li class="pull-left"><a class="info-a" href="#">帮助中心</a></li>
-    <li class="pull-left"><a class="info-a" href="#">关于</a></li>
+    <li *ngIf="!isLogin" class="pull-left"><a class="info-a" href="javascript:;">登录</a></li>
+    <li *ngIf="!isLogin" class="pull-left"><a class="info-a" href="javascript:;">注册</a></li>
+    <li class="pull-left"><a class="info-a" href="javascript:;">帮助中心</a></li>
+    <li class="pull-left"><a class="info-a" href="javascript:;">关于</a></li>
   </ul>
 </div>

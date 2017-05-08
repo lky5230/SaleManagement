@@ -1,8 +1,8 @@
-import { DropDownBtnComponent } from './shared/drop-down-btn/drop-down-btn.component';
+import { HeaderComponent } from './shared/header/header.component';
 
 
 export const routing = [
-    { path: '', component: DropDownBtnComponent },
+    { path: '', component: HeaderComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 
 ]

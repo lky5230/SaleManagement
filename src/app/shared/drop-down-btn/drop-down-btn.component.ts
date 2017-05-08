@@ -1,5 +1,5 @@
-import { Component, OnInit, HostListener, Input } from '@angular/core';
-import { Router } from "@angular/router"
+import { Component, OnInit, HostListener, Input, EventEmitter, Output } from '@angular/core';
+
 @Component({
   selector: 'drop-down-btn',
   templateUrl: './drop-down-btn.component.html',
@@ -10,8 +10,9 @@ export class DropDownBtnComponent implements OnInit {
   private isExpored = false;
   //下拉列表数组
   @Input() list = [];
+  @Output() dropDownClick = new EventEmitter()
 
-  constructor(private router: Router) { }
+  constructor() { }
   //展开与收回下拉框
   dropFn() {
     this.isExpored = !this.isExpored
@@ -21,8 +22,8 @@ export class DropDownBtnComponent implements OnInit {
     this.isExpored = false;
   }
   //下拉列表点击跳转
-  goTo(link){
-    this.router.navigate([link]);
+  goTo(link) {
+    this.dropDownClick.emit(link);
   }
   ngOnInit() {
   }
