@@ -21,11 +21,11 @@ import { LeftNavComponent } from './left-nav/left-nav.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule,
+    
+
+    SharedModule,
+    //根路由模块放在最后、、
     RouterModule.forRoot(routing),
-
-    SharedModule
-
   ],
   providers: [],
   bootstrap: [AppComponent]
