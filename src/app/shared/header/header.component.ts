@@ -20,9 +20,7 @@ export class HeaderComponent implements OnInit {
  
   
   ngOnInit() {
-      //判断是否登录
-      this.auth.isLogin();
-      //得到登录状态
+      //登录状态
       this.isLogin = this.auth.loginStatus;
   }
 

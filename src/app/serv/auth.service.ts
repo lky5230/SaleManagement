@@ -2,32 +2,31 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthService {
+  private loginStating = false;
   //登录状态
-  loginStatus = false;
+  public get loginStatus() {
+    return this.isLogin()
+  };
+  public set loginStatus(b: boolean) {
+    this.loginStating = b;
+  };
   //认证凭证
   auth = '';
 
   constructor() { }
   //登录逻辑
-  isLogin() {
+  private isLogin() {
     if (
       window.localStorage.getItem('authName')
       &&
       window.localStorage.getItem('authName') == 'lky') {
-      this.loginStatus = true
+      this.loginStating = true;
     } else {
-      this.loginStatus = false;
+      this.loginStating = false;
     }
+    return this.loginStating;
   }
 
 
 
-
-
-
-
-
-
-
-  
 }
