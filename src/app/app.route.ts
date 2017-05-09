@@ -1,8 +1,13 @@
-import { HeaderComponent } from './shared/header/header.component';
-
+import { LoginPageComponent } from './login-page/login-page.component';
 
 export const routing = [
-    { path: '', component: HeaderComponent },
+    { path: '', redirectTo: '', pathMatch: 'full' },
+    { path: 'login', component: LoginPageComponent },
+
+
+
+
+
     { path: '**', redirectTo: '', pathMatch: 'full' }
 
 ]
