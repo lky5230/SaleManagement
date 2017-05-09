@@ -1,20 +1,20 @@
 <div class="login-page">
 
   <div class="login-form-wrap">
-    <form>
+    <form #loginFormN (ngSubmit)="loginSubmit(loginForm)">
 
       <div class="form-group">
-        <input class="form-block" placeholder="用户名" type="text" name="userName" >
+        <input class="form-block" placeholder="用户名" type="text" name="userName" required #userName [(ngModel)]="loginForm.userName">
       </div>
 
       <div class="form-group">
-        <input class="form-block" placeholder="用户密码" type="password" name="userPassword">
+        <input class="form-block" placeholder="用户密码" type="password" name="userPassword" required #userPassword [(ngModel)]="loginForm.userPassword">
       </div>
 
       <div class="form-group">
-        <button class="btn-block" type="submit">登录</button>
+        <button [disabled]="!loginFormN.valid" class="btn-block" type="submit">登录</button>
       </div>
-
+      
 
     </form>
   </div>

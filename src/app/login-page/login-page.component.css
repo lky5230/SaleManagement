@@ -42,3 +42,7 @@
 .btn-block {
   cursor: pointer;
 }
+.btn-block:disabled{
+  background-color: #ccc;
+  cursor: not-allowed;
+}
