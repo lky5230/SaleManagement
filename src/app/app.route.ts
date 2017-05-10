@@ -1,13 +1,13 @@
 import { LoginPageComponent } from './login-page/login-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 export const routing = [
-    { path: '', redirectTo: '', pathMatch: 'full' },
-    { path: 'login', component: LoginPageComponent },
+    { path: '', redirectTo: 'register', pathMatch: 'full' },
+    { path: 'register', component: RegisterPageComponent },
+    { path: 'login', component: LoginPageComponent }
 
 
 
 
-
-    { path: '**', redirectTo: '', pathMatch: 'full' }
 
 ]

@@ -1,13 +1,13 @@
 <div class="login-page">
 
   <div class="login-form-wrap">
-    <form #loginFormN="ngForm" (ngSubmit)="loginSubmit(loginForm)">
+    <form #registerFormN="ngForm" (ngSubmit)="registerSubmit(registerForm)">
       <!--用户名-->
       <div class="form-group">
-        <input class="form-block" placeholder="用户名" type="text" name="userName" 
+        <input class="form-block" placeholder="电子邮箱" type="email" name="email" 
         required 
-        #userName="ngModel" 
-        [(ngModel)]="loginForm.userName">
+        #userEmail="ngModel" 
+        [(ngModel)]="registerForm.userEmail">
       </div>
       <!--密码-->
       <div class="form-group">
@@ -16,11 +16,11 @@
         minlength="6"
         maxlength="12"
         #userPassword="ngModel" 
-        [(ngModel)]="loginForm.userPassword">
+        [(ngModel)]="registerForm.userPassword">
       </div>
-      <!--登录按钮-->
+      <!--注册按钮-->
       <div class="form-group">
-        <button [disabled]="!loginFormN.valid" class="btn-block" type="submit">登录</button>
+        <button [disabled]="!registerFormN.valid" class="btn-block" type="submit">注册</button>
       </div>
       
 

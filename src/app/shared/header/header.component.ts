@@ -10,22 +10,26 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
 
   //用户下拉框列表
-  private userList = [{ go: '/', info: '设置' }, { go: '/logout', info: '注销' }, { go: '/', info: '设置' }, { go: '/logout', info: '注销' }];
+  private userList = [{ go: '/setting', info: '设置' }, { go: () => { this.auth.isLoging = false }, info: '注销' }];
   //用户下拉选择
   aClikc(link) {
-    console.log(link)
+    if (typeof link.go == 'function') {
+      link.go();
+    } else {
+      this.router.navigate([link])
+    }
   }
   //是否登录
-  isLogin = false;
+  get isLogin() {
+    return this.auth.isLoging;
+  };
   constructor(private auth: AuthService, private router: Router) { }
-  //路由跳转
-  go(link:any, extra = {}) {
-    this.router.navigate([link], extra);
+  pageTo(link) {
+    this.router.navigate([link])
   }
 
   ngOnInit() {
-    //登录状态
-    this.isLogin = this.auth.loginStatus;
+
   }
 
 }

@@ -11,10 +11,10 @@
 
     </li>
     <li *ngIf="!isLogin" class="pull-left">
-      <a class="info-a" href="javascript:;" (click)="go('login')">登录</a>
+      <a class="info-a" href="javascript:;" (click)="pageTo('/login')">登录</a>
     </li>
     <li *ngIf="!isLogin" class="pull-left">
-      <a class="info-a" href="javascript:;">注册</a>
+      <a class="info-a" href="javascript:;" (click)="pageTo('/register')">注册</a>
     </li>
     <li class="pull-left">
       <a class="info-a" href="javascript:;">帮助中心</a>
