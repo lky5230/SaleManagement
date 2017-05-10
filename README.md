@@ -1,2 +1,4 @@
 # SaleManagement 
-基于angular2的二位无群前端应用
+
+基于angular2的无名前端应用
+
