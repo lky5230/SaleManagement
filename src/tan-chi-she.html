@@ -60,13 +60,17 @@
     let mainHeight = 400;
     let unitWidth = 20; //蛇单元宽度
     let unitHeight = 20;
-    let speed = 110; // 运动速度
+    let speed = 210; // 运动速度
     let dir = 'left'; //蛇头运动方向
     let lastStatus = {}; //用来记录蛇尾上个状态的变量，为了添加新的蛇尾到蛇数组 
     let food = {}; //食物模型
     let color = ['yellow', '#607d8b', '#9e9e9e', '#795548', '#ff5722', '#ff9800', '#ffeb3b', '#8bc34a', '#4caf50',
       '#009688', '#03a9f4', '#673ab7', '#e91e63'
     ];
+
+    let once = false; //两次按键用的临时开关
+    let Dnext = ''; //两次按键产生的下一次dir方向
+
     //蛇单元模型
     let snakeUnit = {
       left: 0, //左边距
@@ -163,6 +167,11 @@
             snake[0].top += unitWidth;
             break;
         };
+        //记得自动关闭开关
+        if (once) {
+          dir = Dnext;
+          once = false;
+        };
         //检测到蛇头坐标（超越、碰撞）到墙壁，注意这里还没有真正渲染left、top的位置
         if (snake[0].left < 0 || snake[0].top < 0 || snake[0].left >= mainWidth || snake[0].top >= mainHeight) {
           console.log(`撞墙了`)
@@ -232,7 +241,6 @@
     let mark = true; //用来交替记录的中间变量
 
     document.addEventListener('keydown', function (e) {
-
       //交替记录两次按键的信息
       mark = !mark;
       if (mark) {
@@ -246,22 +254,43 @@
         timeGap2.byMe = true;
         timeGap1.byMe = false;
       };
-      //两次键盘按下间隔小于100ms，表示同时按下这两个键
-      if (Math.abs(timeGap1.time - timeGap2.time) < 100) {
+      //两次按键相同
+      if (
+        (dir == 'left' && e.keyCode == 37) ||
+        (dir == 'right' && e.keyCode == 39) ||
+        (dir == 'top' && e.keyCode == 38) ||
+        (dir == 'bottom' && e.keyCode == 40)
+      ) {
+        return ;
+      }
+      //两次键盘不同且按下间隔小于100ms，表示同时按下这两个键
+      else if (Math.abs(timeGap1.time - timeGap2.time) < 100) {
 
         if ((timeGap1.code == 38 && timeGap2.code == 37) || (timeGap1.code == 37 && timeGap2.code == 38)) {
           //1、左上
           if (!timeGap1.byMe) {
             if (timeGap1.code == 38) {
               //先上后左
+              dir = 'top';
+              once = true;
+              Dnext = 'left';
             } else {
               //先左后上
+              dir = 'left';
+              once = true;
+              Dnext = 'top';
             }
           } else {
             if (timeGap2.code == 38) {
               //先上后左
+              dir = 'top';
+              once = true;
+              Dnext = 'left';
             } else {
               //先左后上
+              dir = 'left';
+              once = true;
+              Dnext = 'top';
             }
           }
         };
@@ -270,14 +299,26 @@
           if (!timeGap1.byMe) {
             if (timeGap1.code == 38) {
               //先上后右
+              dir = 'top';
+              once = true;
+              Dnext = 'right';
             } else {
               //先右后上
+              dir = 'right';
+              once = true;
+              Dnext = 'top';
             }
           } else {
             if (timeGap2.code == 38) {
               //先上后右
+              dir = 'top';
+              once = true;
+              Dnext = 'right';
             } else {
               //先右后上
+              dir = 'right';
+              once = true;
+              Dnext = 'top';
             }
           }
         };
@@ -286,14 +327,26 @@
           if (!timeGap1.byMe) {
             if (timeGap1.code == 40) {
               //先下后左
+              dir = 'bottom';
+              once = true;
+              Dnext = 'left';
             } else {
               //先左后下
+              dir = 'left';
+              once = true;
+              Dnext = 'bottom';
             }
           } else {
             if (timeGap2.code == 40) {
               //先下后左
+              dir = 'bottom';
+              once = true;
+              Dnext = 'left';
             } else {
               //先左后下
+              dir = 'left';
+              once = true;
+              Dnext = 'bottom';
             }
           }
         };
@@ -302,21 +355,35 @@
           if (!timeGap1.byMe) {
             if (timeGap1.code == 40) {
               //先下后右
+              dir = 'bottom';
+              once = true;
+              Dnext = 'right';
             } else {
               //先右后下
+              dir = 'right';
+              once = true;
+              Dnext = 'bottom';
             }
           } else {
             if (timeGap2.code == 40) {
               //先下后右
+              dir = 'bottom';
+              once = true;
+              Dnext = 'right';
             } else {
               //先右后下
+              dir = 'right';
+              once = true;
+              Dnext = 'bottom';
             }
           }
         };
 
-      } else {
-        //在非双按键情况下，按键若相反，取原来正常的方向（解决按键相反的冲突）
+      }
+      //在非双按键情况下
+      else {
         if (snake.length > 1) {
+          //按键相反，取原来正常的方向（解决按键相反的冲突）
           if (e.keyCode == 37 && dir == 'right') {
             dir = 'right';
             return;
@@ -333,26 +400,39 @@
             dir = 'top';
             return;
           }
-        };
+          //正常情况下
+          if(e.keyCode == 37){
+            dir = 'left';
+          }
+          if(e.keyCode == 38){
+            dir = 'top';
+          }
+          if(e.keyCode == 39){
+            dir = 'right';
+          }
+          if(e.keyCode == 40){
+            dir = 'bottom';
+          }
+        } else {
+          switch (e.keyCode) {
+            case 37: //左
+              dir = 'left';
+              break;
+            case 38: //上
+              dir = 'top';
+              break;
+            case 39: //右
+              dir = 'right';
+              break;
+            case 40: //下
+              dir = 'bottom';
+              break;
+          }
+
+        }
 
       }
 
-
-
-      switch (e.keyCode) {
-        case 38: //上
-          dir = 'top';
-          break;
-        case 40: //下
-          dir = 'bottom';
-          break;
-        case 37: //左
-          dir = 'left';
-          break;
-        case 39: //右
-          dir = 'right';
-          break;
-      };
     });
 
   </script>
