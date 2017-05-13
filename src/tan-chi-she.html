@@ -1,5 +1,9 @@
+<!--
+  @Name：一款贪吃蛇小游戏
+  @Author：liukaiyuan
+-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <title></title>
@@ -27,12 +31,25 @@
       width: 20px;
       height: 20px;
     }
+    /*
+    蛇头样式
+    */
+
+    .unit:nth-of-type(1) {}
+    /*
+    食物样式
+    */
+
+    #food {
+      background: radial-gradient(ellipse at center, rgba(239, 197, 202, 1) 0%, rgba(210, 75, 90, 1) 26%, rgba(186, 39, 55, 1) 52%, rgba(241, 142, 153, 1) 100%);
+      box-shadow: 0 0 6px rgba(240, 113, 70, .8), 0 0 14px rgba(204, 0, 0, .4);
+    }
 
   </style>
 </head>
 
 <body>
-  <button type="button" onclick="startMove()">开始运动</button>
+  <button type="button" onclick="startMove()">开始/加速</button>
   <button type="button" onclick="stopMove()">暂停</button>
   <div id="main"></div>
 
@@ -45,12 +62,12 @@
     let unitHeight = 20;
     let speed = 110; // 运动速度
     let dir = 'left'; //蛇头运动方向
-    let lastStatus = {}; //用来记录蛇尾上个状态的变量 
+    let lastStatus = {}; //用来记录蛇尾上个状态的变量，为了添加新的蛇尾到蛇数组 
     let food = {}; //食物模型
     let color = ['yellow', '#607d8b', '#9e9e9e', '#795548', '#ff5722', '#ff9800', '#ffeb3b', '#8bc34a', '#4caf50',
       '#009688', '#03a9f4', '#673ab7', '#e91e63'
     ];
-    // 蛇单元模型
+    //蛇单元模型
     let snakeUnit = {
       left: 0, //左边距
       top: 0, //上边距
@@ -68,10 +85,10 @@
     renderSnake(snake[0]);
     //初始化食物
     createFood();
-
+    //将初始化的蛇头、食物添进DOM中
     document.querySelector('#main').appendChild(food.dom);
     document.querySelector('#main').appendChild(snake[0].dom);
-    //创建蛇单元
+    //创建蛇单元的dom元素
     function createUnit() {
       let domUnit = document.createElement('div');
       domUnit.className = 'unit';
@@ -87,48 +104,51 @@
           item.dom.style.backgroundColor = color[index % color.length];
         })
       } else {
+        //单个蛇单元
         snake.dom.style.left = snake.left + 'px';
         snake.dom.style.top = snake.top + 'px';
-      }
-      if (snake == food) { //食物的颜色
-        snake.dom.style.backgroundColor = '#f00';
       }
     };
     //创建食物
     function createFood() {
+      //食物合法性
+      let foodValid = true;
       //随机生成食物  
       food = {
         left: parseInt(Math.random() * (mainWidth - unitWidth - 0) / unitWidth) * unitWidth, //最左是0，最右是380
         top: parseInt(Math.random() * (mainHeight - unitHeight - 0) / unitHeight) * unitHeight,
-        dom: createUnit(),
-        direction: 'top'
+        dom: createUnit()
       };
       //判断食物位置是否和蛇体有冲突
       for (let i = 0; i < snake.length; i++) {
-        if (food.left == snake[i].left || food.top == snake[i].top) {
+        if (food.left == snake[i].left && food.top == snake[i].top) {
+          foodValid = false;
           break;
-        } else {
-          renderSnake(food);
-          return;
         }
       };
-      //重新生成食物
-      createFood()
+      if (foodValid) {
+        //食物的id
+        food.dom.id = 'food';
+        renderSnake(food);
+      } else {
+        //重新生成食物
+        createFood()
+      }
     };
     //开启定时器
     function startMove() {
 
       timer = setInterval(function () {
-        //最后一个蛇单元的上一个状态,用以增加长度
-        lastStatus = {
-          left: snake[snake.length - 1].left,
-          top: snake[snake.length - 1].top,
-          direction: snake[snake.length - 1].direction
-        };
 
-        //根据按下的键得出蛇头的应该往哪运动
+        //1、先计算其他蛇单元 (除了蛇头)
+        for (let i = snake.length - 1; i > 0; i--) {
+          snake[i].left = snake[i - 1].left;
+          snake[i].top = snake[i - 1].top;
+          snake[i].direction = snake[i - 1].direction;
+        };
+        // 再根据按下的键得出蛇头现在应该往哪运动
         snake[0].direction = dir;
-        //计算蛇头运动坐标
+        //2、计算蛇头运动坐标
         switch (dir) {
           case 'top':
             snake[0].top -= unitHeight;
@@ -143,29 +163,50 @@
             snake[0].top += unitWidth;
             break;
         };
-        //计算其他蛇单元
-        for (let i = snake.length - 1; i > 0; i--) {
-          snake[i].left = snake[i - 1].left;
-          snake[i].top = snake[i - 1].top;
-          snake[i].direction = snake[i - 1].direction;
+        //检测到蛇头坐标（超越、碰撞）到墙壁，注意这里还没有真正渲染left、top的位置
+        if (snake[0].left < 0 || snake[0].top < 0 || snake[0].left >= mainWidth || snake[0].top >= mainHeight) {
+          console.log(`撞墙了`)
+          clearInterval(timer);
+          return;
+        };
+        //检测蛇头是否撞到自己
+        for (let i = 1; i < snake.length; i++) {
+          if (snake[i].left == snake[0].left && snake[i].top == snake[0].top) {
+            console.log(`撞到自己了`)
+            clearInterval(timer);
+            return;
+          };
         };
 
-        //设置所有蛇单元页面位置
+        //渲染所有蛇单元在页面的位置
         renderSnake(snake);
         //吃到食物
         if (snake[0].left == food.left && snake[0].top == food.top) {
-          snake.push({ //将蛇尾的上一个状态加入数组
+          snake.push({ //将上个蛇尾的状态加入蛇数组
             left: lastStatus.left,
             top: lastStatus.top,
             dom: createUnit(),
             direction: lastStatus.direction
           });
 
-          //设置所有蛇单元位置
+          //更新所有蛇单元在页面的位置
           renderSnake(snake);
+          //更新蛇尾
           document.querySelector('#main').appendChild(snake[snake.length - 1].dom);
-          
-        }
+          //创建新的食物模型
+          createFood();
+          //从DOM中删掉上一个食物
+          document.querySelector('#main').removeChild(document.querySelector('#food'));
+          //加入新的食物DOM到页面
+          document.querySelector('#main').appendChild(food.dom);
+        };
+
+        //更新并记录最后一个蛇单元的状态
+        lastStatus = {
+          left: snake[snake.length - 1].left,
+          top: snake[snake.length - 1].top,
+          direction: snake[snake.length - 1].direction
+        };
 
       }, speed)
 
@@ -174,9 +215,130 @@
     //关闭定时器
     function stopMove() {
       clearInterval(timer);
-    }
-    //监听上下左右键
+    };
+    /*
+      监听上、下、左、右键的触发
+    */
+    let timeGap1 = {
+      time: 0,
+      code: 0,
+      byMe: false
+    };
+    let timeGap2 = {
+      time: 0, //时间戳 ms
+      code: 0, //记录键码
+      byMe: false //是不是最新的那个按键
+    };
+    let mark = true; //用来交替记录的中间变量
+
     document.addEventListener('keydown', function (e) {
+
+      //交替记录两次按键的信息
+      mark = !mark;
+      if (mark) {
+        timeGap1.time = new Date().getTime();
+        timeGap1.code = e.keyCode;
+        timeGap1.byMe = true;
+        timeGap2.byMe = false;
+      } else {
+        timeGap2.time = new Date().getTime();
+        timeGap2.code = e.keyCode;
+        timeGap2.byMe = true;
+        timeGap1.byMe = false;
+      };
+      //两次键盘按下间隔小于100ms，表示同时按下这两个键
+      if (Math.abs(timeGap1.time - timeGap2.time) < 100) {
+
+        if ((timeGap1.code == 38 && timeGap2.code == 37) || (timeGap1.code == 37 && timeGap2.code == 38)) {
+          //1、左上
+          if (!timeGap1.byMe) {
+            if (timeGap1.code == 38) {
+              //先上后左
+            } else {
+              //先左后上
+            }
+          } else {
+            if (timeGap2.code == 38) {
+              //先上后左
+            } else {
+              //先左后上
+            }
+          }
+        };
+        if ((timeGap1.code == 38 && timeGap2.code == 39) || (timeGap1.code == 39 && timeGap2.code == 38)) {
+          //2、右上
+          if (!timeGap1.byMe) {
+            if (timeGap1.code == 38) {
+              //先上后右
+            } else {
+              //先右后上
+            }
+          } else {
+            if (timeGap2.code == 38) {
+              //先上后右
+            } else {
+              //先右后上
+            }
+          }
+        };
+        if ((timeGap1.code == 40 && timeGap2.code == 37) || timeGap1.code == 37 && timeGap2.code == 40) {
+          //3、左下
+          if (!timeGap1.byMe) {
+            if (timeGap1.code == 40) {
+              //先下后左
+            } else {
+              //先左后下
+            }
+          } else {
+            if (timeGap2.code == 40) {
+              //先下后左
+            } else {
+              //先左后下
+            }
+          }
+        };
+        if ((timeGap1.code == 40 && timeGap2.code == 39) || timeGap1.code == 39 && timeGap2.code == 40) {
+          //4、右下
+          if (!timeGap1.byMe) {
+            if (timeGap1.code == 40) {
+              //先下后右
+            } else {
+              //先右后下
+            }
+          } else {
+            if (timeGap2.code == 40) {
+              //先下后右
+            } else {
+              //先右后下
+            }
+          }
+        };
+
+      } else {
+        //在非双按键情况下，按键若相反，取原来正常的方向（解决按键相反的冲突）
+        if (snake.length > 1) {
+          if (e.keyCode == 37 && dir == 'right') {
+            dir = 'right';
+            return;
+          }
+          if (e.keyCode == 38 && dir == 'bottom') {
+            dir = 'bottom';
+            return;
+          }
+          if (e.keyCode == 39 && dir == 'left') {
+            dir = 'left';
+            return;
+          }
+          if (e.keyCode == 40 && dir == 'top') {
+            dir = 'top';
+            return;
+          }
+        };
+
+      }
+
+
+
       switch (e.keyCode) {
         case 38: //上
           dir = 'top';
