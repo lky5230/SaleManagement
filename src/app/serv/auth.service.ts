@@ -19,7 +19,6 @@ export class AuthService {
   constructor() { }
   
   public isLogin(form) {
-    //有参数表示验证用户合法性
     if (form) {
 
       if (form.userName) {

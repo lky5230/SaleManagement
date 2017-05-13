@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    #main {
+      width: 400px;
+      height: 400px;
+      position: relative;
+      border: 1px solid #ccc;
+      margin: 20px auto 10px;
+    }
+
+    .unit {
+      position: absolute;
+      background-color: yellow;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <button type="button" onclick="startMove()">开始运动</button>
+  <button type="button" onclick="stopMove()">暂停</button>
+  <div id="main"></div>
+
+  <script>
+    let snake = []; //组成蛇的蛇单元数组，第一个是蛇头
+    let timer; //定时器
+    let mainWidth = 400; //容器宽度
+    let mainHeight = 400;
+    let unitWidth = 20; //蛇单元宽度
+    let unitHeight = 20;
+    let speed = 110; // 运动速度
+    let dir = 'left'; //蛇头运动方向
+    let lastStatus = {}; //用来记录蛇尾上个状态的变量 
+    let food = {}; //食物模型
+    let color = ['yellow', '#607d8b', '#9e9e9e', '#795548', '#ff5722', '#ff9800', '#ffeb3b', '#8bc34a', '#4caf50',
+      '#009688', '#03a9f4', '#673ab7', '#e91e63'
+    ];
+    // 蛇单元模型
+    let snakeUnit = {
+      left: 0, //左边距
+      top: 0, //上边距
+      dom: '[DOM Object]', //单元的dom元素
+      direction: 'top' //单元前进的方向
+    };
+    //先在蛇数组里放入第一个蛇单元，即蛇头
+    snake.push({
+      left: parseInt(Math.random() * (mainWidth - unitWidth - 0) / unitWidth) * unitWidth,
+      top: parseInt(Math.random() * (mainHeight - unitHeight - 0) / unitHeight) * unitHeight,
+      dom: createUnit(),
+      direction: 'top'
+    });
+    //初始化蛇头
+    renderSnake(snake[0]);
+    //初始化食物
+    createFood();
+
+    document.querySelector('#main').appendChild(food.dom);
+    document.querySelector('#main').appendChild(snake[0].dom);
+    //创建蛇单元
+    function createUnit() {
+      let domUnit = document.createElement('div');
+      domUnit.className = 'unit';
+      return domUnit;
+    }
+    //计算蛇数组的位置
+    function renderSnake(snake) {
+      if (Array.isArray(snake)) {
+        //渲染所有蛇单元的位置
+        snake.forEach((item, index) => {
+          item.dom.style.left = item.left + 'px';
+          item.dom.style.top = item.top + 'px';
+          item.dom.style.backgroundColor = color[index % color.length];
+        })
+      } else {
+        snake.dom.style.left = snake.left + 'px';
+        snake.dom.style.top = snake.top + 'px';
+      }
+      if (snake == food) { //食物的颜色
+        snake.dom.style.backgroundColor = '#f00';
+      }
+    };
+    //创建食物
+    function createFood() {
+      //随机生成食物  
+      food = {
+        left: parseInt(Math.random() * (mainWidth - unitWidth - 0) / unitWidth) * unitWidth, //最左是0，最右是380
+        top: parseInt(Math.random() * (mainHeight - unitHeight - 0) / unitHeight) * unitHeight,
+        dom: createUnit(),
+        direction: 'top'
+      };
+      //判断食物位置是否和蛇体有冲突
+      for (let i = 0; i < snake.length; i++) {
+        if (food.left == snake[i].left || food.top == snake[i].top) {
+          break;
+        } else {
+          renderSnake(food);
+          return;
+        }
+      };
+      //重新生成食物
+      createFood()
+    };
+    //开启定时器
+    function startMove() {
+
+      timer = setInterval(function () {
+        //最后一个蛇单元的上一个状态,用以增加长度
+        lastStatus = {
+          left: snake[snake.length - 1].left,
+          top: snake[snake.length - 1].top,
+          direction: snake[snake.length - 1].direction
+        };
+
+        //根据按下的键得出蛇头的应该往哪运动
+        snake[0].direction = dir;
+        //计算蛇头运动坐标
+        switch (dir) {
+          case 'top':
+            snake[0].top -= unitHeight;
+            break;
+          case 'left':
+            snake[0].left -= unitWidth;
+            break;
+          case 'right':
+            snake[0].left += unitHeight;
+            break;
+          case 'bottom':
+            snake[0].top += unitWidth;
+            break;
+        };
+        //计算其他蛇单元
+        for (let i = snake.length - 1; i > 0; i--) {
+          snake[i].left = snake[i - 1].left;
+          snake[i].top = snake[i - 1].top;
+          snake[i].direction = snake[i - 1].direction;
+        };
+
+        //设置所有蛇单元页面位置
+        renderSnake(snake);
+        //吃到食物
+        if (snake[0].left == food.left && snake[0].top == food.top) {
+          snake.push({ //将蛇尾的上一个状态加入数组
+            left: lastStatus.left,
+            top: lastStatus.top,
+            dom: createUnit(),
+            direction: lastStatus.direction
+          });
+
+          //设置所有蛇单元位置
+          renderSnake(snake);
+          document.querySelector('#main').appendChild(snake[snake.length - 1].dom);
+          
+        }
+
+      }, speed)
+
+
+    };
+    //关闭定时器
+    function stopMove() {
+      clearInterval(timer);
+    }
+    //监听上下左右键
+    document.addEventListener('keydown', function (e) {
+      switch (e.keyCode) {
+        case 38: //上
+          dir = 'top';
+          break;
+        case 40: //下
+          dir = 'bottom';
+          break;
+        case 37: //左
+          dir = 'left';
+          break;
+        case 39: //右
+          dir = 'right';
+          break;
+      };
+    });
+
+  </script>
+</body>
+
+</html>
