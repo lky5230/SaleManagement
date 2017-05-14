@@ -96,14 +96,14 @@
       left: 0, //左边距
       top: 0, //上边距
       dom: '[DOM Object]', //单元的dom元素
-      direction: 'top' //单元前进的方向
+      //direction: 'top' //单元前进的方向
     };
     //先在蛇数组里放入第一个蛇单元，即蛇头
     snake.push({
       left: parseInt(Math.random() * (mainWidth - unitWidth - 0) / unitWidth) * unitWidth,
       top: parseInt(Math.random() * (mainHeight - unitHeight - 0) / unitHeight) * unitHeight,
       dom: createUnit(),
-      direction: 'top'
+     //direction: 'top'
     });
     //初始化蛇头
     renderSnake(snake[0]);
@@ -176,10 +176,10 @@
         for (let i = snake.length - 1; i > 0; i--) {
           snake[i].left = snake[i - 1].left;
           snake[i].top = snake[i - 1].top;
-          snake[i].direction = snake[i - 1].direction;
+          //snake[i].direction = snake[i - 1].direction;
         };
         // 再根据按下的键得出蛇头现在应该往哪运动
-        snake[0].direction = dir;
+        //snake[0].direction = dir;
         //2、最后计算蛇头运动坐标
         switch (dir) {
           case 'top':
@@ -226,11 +226,11 @@
           clearInterval(timer);
           startMove();
 
-          snake.push({ //将上个蛇尾的状态加入蛇数组
+          snake.push({ //吃到食物、就将上个蛇尾的状态加入蛇数组
             left: lastStatus.left,
             top: lastStatus.top,
             dom: createUnit(),
-            direction: lastStatus.direction
+            //direction: lastStatus.direction
           });
 
           //更新所有蛇单元在页面的位置
@@ -249,7 +249,7 @@
         lastStatus = {
           left: snake[snake.length - 1].left,
           top: snake[snake.length - 1].top,
-          direction: snake[snake.length - 1].direction
+          //direction: snake[snake.length - 1].direction
         };
 
       }, speed)
