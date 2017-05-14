@@ -1,5 +1,5 @@
 <!--
-  @Name：一款贪吃蛇小游戏
+  @GameName：模仿贪吃蛇
   @Author：liukaiyuan
 -->
 <!DOCTYPE html>
@@ -71,7 +71,7 @@
       <button type="button" onclick="location.reload()">重新开始</button>      
       <button type="button" onclick="startMove()">开始</button>
       <button type="button" onclick="stopMove()">暂停</button> 你的分数：
-      <strong id="score">0</strong> 最高纪录：
+      <strong id="score">0</strong> - 最高纪录：
       <span id="record">0</span>
     </div>
   </div>
@@ -112,7 +112,8 @@
     //将初始化的蛇头、食物添进DOM中
     document.querySelector('#main').appendChild(food.dom);
     document.querySelector('#main').appendChild(snake[0].dom);
-    //获取存储的最高记录或新创建储存纪录
+    //初始化时、获取存储的最高记录或新创建储存纪录
+    //localStorage在edge浏览器中需要服务器环境
     if (localStorage.getItem('tanchiseMaxScore')) {
       document.querySelector('#record').innerHTML = localStorage.getItem('tanchiseMaxScore');
     } else {
