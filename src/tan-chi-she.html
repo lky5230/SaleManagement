@@ -19,9 +19,9 @@
     #main {
       width: 400px;
       height: 400px;
+      border: 1px solid #999;
       position: relative;
-      border: 1px solid #ccc;
-      margin: 20px auto 10px;
+      margin: 30px auto;
     }
 
     .unit {
@@ -30,6 +30,21 @@
       border-radius: 50%;
       width: 20px;
       height: 20px;
+    }
+
+    .game {
+      border: 1px solid #ccc;
+    }
+
+    .btn {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .btn * {
+      margin-left: 4px;
+      margin-right: 4px;
     }
     /*
     蛇头样式
@@ -49,28 +64,33 @@
 </head>
 
 <body>
-  <button type="button" onclick="startMove()">开始/加速</button>
-  <button type="button" onclick="stopMove()">暂停</button>
-  <div id="main"></div>
+
+  <div class="game">
+    <div id="main"></div>
+    <div class="btn">
+      <button type="button" onclick="location.reload()">重新开始</button>      
+      <button type="button" onclick="startMove()">开始</button>
+      <button type="button" onclick="stopMove()">暂停</button> 你的分数：
+      <strong id="score">0</strong> 最高纪录：
+      <span id="record">0</span>
+    </div>
+  </div>
+
 
   <script>
-    let snake = []; //组成蛇的蛇单元数组，第一个是蛇头
+    let snake = []; //组成蛇的蛇单元数组，第一个snake[0]是蛇头
     let timer; //定时器
     let mainWidth = 400; //容器宽度
     let mainHeight = 400;
     let unitWidth = 20; //蛇单元宽度
     let unitHeight = 20;
-    let speed = 210; // 运动速度
+    let speed = 200; // 运动速度
     let dir = 'left'; //蛇头运动方向
     let lastStatus = {}; //用来记录蛇尾上个状态的变量，为了添加新的蛇尾到蛇数组 
     let food = {}; //食物模型
     let color = ['yellow', '#607d8b', '#9e9e9e', '#795548', '#ff5722', '#ff9800', '#ffeb3b', '#8bc34a', '#4caf50',
       '#009688', '#03a9f4', '#673ab7', '#e91e63'
     ];
-
-    let once = false; //两次按键用的临时开关
-    let Dnext = ''; //两次按键产生的下一次dir方向
-
     //蛇单元模型
     let snakeUnit = {
       left: 0, //左边距
@@ -92,6 +112,13 @@
     //将初始化的蛇头、食物添进DOM中
     document.querySelector('#main').appendChild(food.dom);
     document.querySelector('#main').appendChild(snake[0].dom);
+    //获取存储的最高记录或新创建储存纪录
+    if (localStorage.getItem('tanchiseMaxScore')) {
+      document.querySelector('#record').innerHTML = localStorage.getItem('tanchiseMaxScore');
+    } else {
+      localStorage.setItem('tanchiseMaxScore', 0);
+      document.querySelector('#record').innerHTML = localStorage.getItem('tanchiseMaxScore');
+    };
     //创建蛇单元的dom元素
     function createUnit() {
       let domUnit = document.createElement('div');
@@ -141,7 +168,7 @@
     };
     //开启定时器
     function startMove() {
-
+      
       timer = setInterval(function () {
 
         //1、先计算其他蛇单元 (除了蛇头)
@@ -152,7 +179,7 @@
         };
         // 再根据按下的键得出蛇头现在应该往哪运动
         snake[0].direction = dir;
-        //2、计算蛇头运动坐标
+        //2、最后计算蛇头运动坐标
         switch (dir) {
           case 'top':
             snake[0].top -= unitHeight;
@@ -167,21 +194,19 @@
             snake[0].top += unitWidth;
             break;
         };
-        //记得自动关闭开关
-        if (once) {
-          dir = Dnext;
-          once = false;
-        };
+
         //检测到蛇头坐标（超越、碰撞）到墙壁，注意这里还没有真正渲染left、top的位置
         if (snake[0].left < 0 || snake[0].top < 0 || snake[0].left >= mainWidth || snake[0].top >= mainHeight) {
-          console.log(`撞墙了`)
+          console.log(`撞墙了`);
+          recordScore(+document.querySelector('#score').innerHTML);
           clearInterval(timer);
           return;
         };
         //检测蛇头是否撞到自己
         for (let i = 1; i < snake.length; i++) {
           if (snake[i].left == snake[0].left && snake[i].top == snake[0].top) {
-            console.log(`撞到自己了`)
+            console.log(`撞到自己了`);
+            recordScore(+document.querySelector('#score').innerHTML);
             clearInterval(timer);
             return;
           };
@@ -191,6 +216,15 @@
         renderSnake(snake);
         //吃到食物
         if (snake[0].left == food.left && snake[0].top == food.top) {
+          //1、改变速度
+          if (speed >= 80) {
+            speed -= 10;
+          };
+          document.querySelector('#score').innerHTML = +document.querySelector('#score').innerHTML + 1;
+          //2、重新开启更快速度的定时器 
+          clearInterval(timer);
+          startMove();
+
           snake.push({ //将上个蛇尾的状态加入蛇数组
             left: lastStatus.left,
             top: lastStatus.top,
@@ -225,35 +259,15 @@
     function stopMove() {
       clearInterval(timer);
     };
-    /*
-      监听上、下、左、右键的触发
-    */
-    let timeGap1 = {
-      time: 0,
-      code: 0,
-      byMe: false
-    };
-    let timeGap2 = {
-      time: 0, //时间戳 ms
-      code: 0, //记录键码
-      byMe: false //是不是最新的那个按键
-    };
-    let mark = true; //用来交替记录的中间变量
-
+    //记录最高分数
+    function recordScore(newRecord) {
+      if (localStorage.getItem('tanchiseMaxScore')) {
+        if (+localStorage.getItem('tanchiseMaxScore') < +newRecord) {
+          localStorage.setItem('tanchiseMaxScore', newRecord)
+        }
+      }
+    }
     document.addEventListener('keydown', function (e) {
-      //交替记录两次按键的信息
-      mark = !mark;
-      if (mark) {
-        timeGap1.time = new Date().getTime();
-        timeGap1.code = e.keyCode;
-        timeGap1.byMe = true;
-        timeGap2.byMe = false;
-      } else {
-        timeGap2.time = new Date().getTime();
-        timeGap2.code = e.keyCode;
-        timeGap2.byMe = true;
-        timeGap1.byMe = false;
-      };
       //两次按键相同
       if (
         (dir == 'left' && e.keyCode == 37) ||
@@ -261,129 +275,11 @@
         (dir == 'top' && e.keyCode == 38) ||
         (dir == 'bottom' && e.keyCode == 40)
       ) {
-        return ;
-      }
-      //两次键盘不同且按下间隔小于100ms，表示同时按下这两个键
-      else if (Math.abs(timeGap1.time - timeGap2.time) < 100) {
-
-        if ((timeGap1.code == 38 && timeGap2.code == 37) || (timeGap1.code == 37 && timeGap2.code == 38)) {
-          //1、左上
-          if (!timeGap1.byMe) {
-            if (timeGap1.code == 38) {
-              //先上后左
-              dir = 'top';
-              once = true;
-              Dnext = 'left';
-            } else {
-              //先左后上
-              dir = 'left';
-              once = true;
-              Dnext = 'top';
-            }
-          } else {
-            if (timeGap2.code == 38) {
-              //先上后左
-              dir = 'top';
-              once = true;
-              Dnext = 'left';
-            } else {
-              //先左后上
-              dir = 'left';
-              once = true;
-              Dnext = 'top';
-            }
-          }
-        };
-        if ((timeGap1.code == 38 && timeGap2.code == 39) || (timeGap1.code == 39 && timeGap2.code == 38)) {
-          //2、右上
-          if (!timeGap1.byMe) {
-            if (timeGap1.code == 38) {
-              //先上后右
-              dir = 'top';
-              once = true;
-              Dnext = 'right';
-            } else {
-              //先右后上
-              dir = 'right';
-              once = true;
-              Dnext = 'top';
-            }
-          } else {
-            if (timeGap2.code == 38) {
-              //先上后右
-              dir = 'top';
-              once = true;
-              Dnext = 'right';
-            } else {
-              //先右后上
-              dir = 'right';
-              once = true;
-              Dnext = 'top';
-            }
-          }
-        };
-        if ((timeGap1.code == 40 && timeGap2.code == 37) || timeGap1.code == 37 && timeGap2.code == 40) {
-          //3、左下
-          if (!timeGap1.byMe) {
-            if (timeGap1.code == 40) {
-              //先下后左
-              dir = 'bottom';
-              once = true;
-              Dnext = 'left';
-            } else {
-              //先左后下
-              dir = 'left';
-              once = true;
-              Dnext = 'bottom';
-            }
-          } else {
-            if (timeGap2.code == 40) {
-              //先下后左
-              dir = 'bottom';
-              once = true;
-              Dnext = 'left';
-            } else {
-              //先左后下
-              dir = 'left';
-              once = true;
-              Dnext = 'bottom';
-            }
-          }
-        };
-        if ((timeGap1.code == 40 && timeGap2.code == 39) || timeGap1.code == 39 && timeGap2.code == 40) {
-          //4、右下
-          if (!timeGap1.byMe) {
-            if (timeGap1.code == 40) {
-              //先下后右
-              dir = 'bottom';
-              once = true;
-              Dnext = 'right';
-            } else {
-              //先右后下
-              dir = 'right';
-              once = true;
-              Dnext = 'bottom';
-            }
-          } else {
-            if (timeGap2.code == 40) {
-              //先下后右
-              dir = 'bottom';
-              once = true;
-              Dnext = 'right';
-            } else {
-              //先右后下
-              dir = 'right';
-              once = true;
-              Dnext = 'bottom';
-            }
-          }
-        };
-
-      }
-      //在非双按键情况下
+        return;
+      }　
       else {
         if (snake.length > 1) {
-          //按键相反，取原来正常的方向（解决按键相反的冲突）
+          //长度大于1时，按键相反，取原来正常的方向（解决按键相反的冲突）
           if (e.keyCode == 37 && dir == 'right') {
             dir = 'right';
             return;
@@ -401,19 +297,20 @@
             return;
           }
           //正常情况下
-          if(e.keyCode == 37){
+          if (e.keyCode == 37) {
             dir = 'left';
           }
-          if(e.keyCode == 38){
+          if (e.keyCode == 38) {
             dir = 'top';
           }
-          if(e.keyCode == 39){
+          if (e.keyCode == 39) {
             dir = 'right';
           }
-          if(e.keyCode == 40){
+          if (e.keyCode == 40) {
             dir = 'bottom';
           }
         } else {
+          //只有蛇头时
           switch (e.keyCode) {
             case 37: //左
               dir = 'left';
@@ -428,7 +325,6 @@
               dir = 'bottom';
               break;
           }
-
         }
 
       }
