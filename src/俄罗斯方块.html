@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #main {
+      border: 1px solid #999;
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 20px auto;
+    }
+
+    .unit {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      box-shadow: inset 0 0 10px #eee, inset 0 0 6px #999;
+    }
+
+    .unit.active {
+      background-color: red;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="main">
+    <div class="unit" v-for="(item, index) of unitArray" :key="item.name" :class="{active: item.active}" :style="{'top': item.top+'px','left': item.left+'px'}"></div>
+  </div>
+
+  <script src="https://cdn.bootcss.com/vue/2.3.3/vue.js"></script>
+  <script>
+    new Vue({
+
+      el: '#main',
+      data: {
+        //所有单元格状态集合
+        unitArray: [],
+        //正在运动的集合
+        nameArr: [
+          [20, 0],
+          [20, 20],
+          [20, 40],
+          [20, 60],
+          [40, 0],
+          [40, 20]
+        ]
+      },
+      computed: {
+
+      },
+      created: function () {
+        let _this = this;
+        //监听上下左右键
+        document.addEventListener('keydown', function (e) {
+          switch (e.keyCode) {
+            case 37: //左
+              let sort37 = [..._this.nameArr];
+              //从小到大
+              sort37.sort(function (a, b) {
+                return a[0] - b[0]
+              });
+              if (sort37[0][0] <= 0) {
+                return;
+              };
+              _this.nameArr = _this.nameArr.map(function (item) {
+                return [item[0] -= 20, item[1]]
+              });
+              _this.activeSomeUnit(_this.nameArr);
+              break;
+
+            case 39: //右
+            let sort39 = [..._this.nameArr];
+              //从大到小
+              sort39.sort(function (a, b) {
+                return b[0] - a[0]
+              });
+              if (sort39[0][0] >= 380) {
+                return;
+              };
+              _this.nameArr = _this.nameArr.map(function (item) {
+                return [item[0] += 20, item[1]]
+              });
+              _this.activeSomeUnit(_this.nameArr);
+              break;
+
+            case 40: //下
+              _this.nameArr = _this.nameArr.map(function (item) {
+                return [item[0], item[1] += 20]
+              });
+              _this.activeSomeUnit(_this.nameArr);
+              break;
+
+          }
+        });
+        //初始化400单元格数据
+        this.unitArray = this.createUnit();
+        this.timer()
+      },
+      methods: {
+        //创建400个单元格数组,全部非激活状态
+        createUnit: function () {
+          let resArr = [];
+          let a = 0;
+          let b = 0;
+          for (let i = 0; i < 400; i++) {
+            a = i % 20;
+            b = Number.parseInt(i / 20);
+            let unit = {
+              left: a * 20,
+              top: b * 20,
+              active: false,
+              name: [a * 20, b * 20]
+            };
+            resArr.push(unit);
+          };
+          return resArr;
+        },
+        //重置所有激活状态，只激活传入的name数组的状态
+        activeSomeUnit(nameArr) {
+          let deactive = this.createUnit() //关闭全部激活状态
+          //激活传入的数组中的名称
+          for (let i = 0; i < deactive.length; i++) {
+            for (let j = 0; j < nameArr.length; j++) {
+              if (deactive[i].name.toString() == nameArr[j].toString()) {
+                deactive[i].active = true;
+              }
+            }
+          };
+          this.unitArray = deactive;
+        },
+        //运动定时器
+        timer() {
+          let _this = this;
+
+          setInterval(function () {
+            let a = _this.nameArr.map(function (item) {
+              return [item[0], item[1] += 20]
+            });
+            _this.nameArr = a;
+            _this.activeSomeUnit(_this.nameArr);
+          }, 600)
+        }
+      }
+
+    })
+
+  </script>
+</body>
+
+</html>
