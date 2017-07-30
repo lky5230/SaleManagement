@@ -1,5 +1,5 @@
 import axios from 'axios';
-const url = 'http://localhost:8080/';
+const url = 'https://lky5230.github.io/';
 //获取
 export function getAllData(){
     return axios.get(url+'static/data.json')
