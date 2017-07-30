@@ -1,0 +1,9 @@
+@mixin font($fontSize){
+    font-size: 1px*$fontSize;
+    [data-dpr="1"] & {
+      font-size: 0.5px*$fontSize;
+    }
+    [data-dpr="3"] & {
+      font-size: 1.46px*$fontSize;
+    }
+}

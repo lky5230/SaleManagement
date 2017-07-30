@@ -1,0 +1,31 @@
+
+.decrease_1{
+    background-image: url('../style/img/decrease_1@2x.png');
+    [data-dpr="3"] &{
+        background-image: url('../style/img/decrease_1@3x.png');
+    }
+}
+.discount_1{
+    background-image: url('../style/img/discount_1@2x.png');
+    [data-dpr="3"] &{
+        background-image: url('../style/img/discount_1@3x.png');
+    }
+}
+.guarantee_1{
+    background-image: url('../style/img/guarantee_1@2x.png');
+    [data-dpr="3"] &{
+        background-image: url('../style/img/guarantee_1@3x.png');
+    }
+}
+.invoice_1{
+    background-image: url('../style/img/invoice_1@2x.png');
+    [data-dpr="3"] &{
+        background-image: url('../style/img/invoice_1@3x.png');
+    }
+}
+.special_1{
+    background-image: url('../style/img/special_1@2x.png');
+    [data-dpr="3"] &{
+        background-image: url('../style/img/special_1@3x.png');
+    }
+}
