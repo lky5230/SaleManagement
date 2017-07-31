@@ -28,9 +28,9 @@
                     <div class="info">
                         <div class="title">商品评价</div>
                         <div class="judge">
-                            <span @touchend="filterJudge(-1)" class="judge-all" :class="{active: active==-1}">全部</span>
-                            <span @touchend="filterJudge(0)" class="judge-1" :class="{active: active==0}">推荐</span>
-                            <span @touchend="filterJudge(1)" class="judge-0" :class="{active: active==1}">吐槽</span>
+                            <span @touchend="filterJudge(-1)" class="judge-all" :class="{active: active==-1}">全部{{filterTypeNumber.all}}</span>
+                            <span @touchend="filterJudge(0)" class="judge-1" :class="{active: active==0}">推荐{{filterTypeNumber.tuijian}}</span>
+                            <span @touchend="filterJudge(1)" class="judge-0" :class="{active: active==1}">吐槽{{filterTypeNumber.tucao}}</span>
                         </div>
                         <div>
                             <comment-list :ratings="ratingList" v-for="(ratingList, index) in filterJudge(active)" :key="index"></comment-list>
@@ -60,6 +60,13 @@ export default {
         },
         detailsData() {
             return this.$store.state.goodsDetailsData;
+        },
+        filterTypeNumber(){
+            let a={}
+            a.tuijian = this.filterJudge(0).length;
+            a.tucao = this.filterJudge(1).length;
+            a.all = this.filterJudge(-1).length;
+            return a;
         }
     },
     methods: {
@@ -153,12 +160,14 @@ $base: 75;
             display: inline-block;
             border-left: 3rem/$base solid transparent;
             &.active{
-                border-left-color: #2035cc;
+                color: #3bdcc6;
+                font-size: 26px;
+                @include font(26); 
             }
         }
         .judge-all{
             background-color: #00a0dc;
-            color: #fff;
+            color: rgb(77, 85, 93);
         }
         .judge-0{
             color: rgb(77, 85, 93);

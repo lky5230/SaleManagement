@@ -1,6 +1,6 @@
 <template>
     <div class="score">
-        <span :class="[item]" v-for="(item, index) in scoreArr" :key="index"></span>
+        <span :style="{width: w+'rem', height: w+'rem'}" :class="[item]" v-for="(item, index) in scoreArr" :key="index"></span>
     </div>
 </template>
 
@@ -8,6 +8,12 @@
 import { scoreFormat } from '@/util/index.js'
 export default {
     props: ["score"],
+    props:{
+        score:{},
+        w:{
+            default: 0.64
+        }
+    },
     computed: {
         scoreArr() {
             return scoreFormat(this.score);
@@ -24,9 +30,8 @@ $base: 75;
     width: 100%;
     span {
         display: inline-block;
-        height: 48rem/$base;
-        width: 48rem/$base;
         background-size: contain;
+        background-position-y: center;
         background-repeat: no-repeat;
         &.all {
             background-image: url("../assets/img/star36_on@2x.png");

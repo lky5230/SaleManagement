@@ -8,7 +8,9 @@
         <router-link tag="span" to="/seller">商家</router-link>
       </div>
       <div class="content">
-        <router-view></router-view>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
       </div>
     </div>
     <fix-shop></fix-shop>
@@ -30,6 +32,10 @@ export default {
     return {
       //显示遮罩
       showMark: false,
+      which: {
+        enter: '',
+        leave: '',
+      }
     }
   },
   components:{

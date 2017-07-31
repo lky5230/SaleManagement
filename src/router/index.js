@@ -10,6 +10,11 @@ export default new Router({
       component: function(resolve){
         require(["@/components/goods"], resolve);
       }
+    },{
+      path: '/judge',
+      component: function(resolve){
+        require(["@/components/judge"], resolve);
+      }
     }
   ]
 })
