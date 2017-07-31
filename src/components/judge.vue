@@ -1,5 +1,6 @@
 <template>
-  <div class="judge-page">
+  <div ref="judge" class="judge-page">
+      <div>
       <div class="store-wrap">
         <div class="score">
             <h3>{{seller.score}}</h3>
@@ -36,6 +37,7 @@
           <div>
             <comment-list2 :ratings="item" v-for="(item, index) in filter(active)" :key="index"></comment-list2>
           </div>
+      </div>
       </div>
   </div>
 </template>
@@ -97,7 +99,7 @@ export default {
         this.$set(this.filterCount,'all',d.length);
         this.$set(this.filterCount,'tuijian',tuijian.length);
         this.$set(this.filterCount,'tucao',tucao.length);
-        this.scroll = new BS(this.$refs.comment, {
+        this.scroll = new BS(this.$refs.judge, {
             startX: 0,
             startY: 0,
             HWCompositing: true
@@ -259,7 +261,7 @@ $base: 75;
     }
     .comment{
         flex: auto;
-        overflow: hidden;
+        // overflow: hidden;
     }
 }
 </style>
