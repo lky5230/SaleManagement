@@ -66,7 +66,8 @@ $base: 75;
     top: 0;
     width: 100vw;
     height: 100vh;
-    padding: 128rem/$base 72rem/$base 64rem/$base;
+    padding: 128rem/$base 72rem/$base 164rem/$base;
+    overflow: hidden;
     .close {
         position: absolute;
         z-index: 10002;

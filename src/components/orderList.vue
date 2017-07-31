@@ -1,5 +1,6 @@
 <template>
   <div class="order-list" :class="{show: $store.state.isShopShow}">
+      <div class="order-mark" @click="$store.commit('changeShopShow', false)" :class="{show: $store.state.isShopShow}"></div>
       <div class="title clearfix">
           <span class="shop-car">购物车</span>
           <span @click="$store.commit('clearBuyList')" class="clear">清空</span>
@@ -57,7 +58,7 @@ export default {
     });
   },
   updated(){
-      this.order.refresh();
+    this.order.refresh();
   },
   destroyed(){
     this.order.destroy();
@@ -71,7 +72,20 @@ $base: 75;
     &.show{
         bottom: 0%;
     }
-    position: absolute;
+    .order-mark{
+        display: none;
+        position: absolute;
+        width: 100%;
+        content: ' ';
+        height: 200vh;
+        background: rgba(0, 0, 0, .1);
+        bottom: 100%;
+        left: 0;
+        &.show{
+            display: block;
+        }
+    }
+    position: fixed;
     transition: all .3s;
     z-index: 998;
     bottom: -100%;

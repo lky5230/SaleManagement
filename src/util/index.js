@@ -43,7 +43,11 @@ export function scoreFormat(score) {
     };
     return arr;
 }
-
+//日期格式化
+export function formateDate(timing){
+    let d = new Date(Number.parseInt(timing));
+    return d.toLocaleString()
+}
 
 
 

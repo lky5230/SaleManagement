@@ -10,9 +10,6 @@ import './style/common.css'
 import './style/animate.css'
 import './util/flexible.js'
 
-
-
-
 /* eslint-disable no-new */
 Vue.config.productionTip = false
 new Vue({

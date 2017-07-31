@@ -58,6 +58,7 @@ export default {
       this.seller = res.data.seller;
       this.icon = supportsType(this.seller.supports[0].type);
       this.$store.commit('getData', res.data);
+      this.$store.commit('getDataSuccess', true);
     });
   },
   components: {

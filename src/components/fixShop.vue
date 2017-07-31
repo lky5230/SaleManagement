@@ -39,6 +39,7 @@ $base: 75;
     to{
         border-color: #219ee9;
         background-color: #219ee9;
+        background-size: 90% 90%;        
     }
 }
 .fix-shop{
@@ -58,7 +59,7 @@ $base: 75;
             width: 90rem/$base;
             height: 90rem/$base;
             background: url('../assets/img/shop-car.png') no-repeat center center, #3f4257;
-            background-size: 85% 85%;
+            background-size: 60% 60%;
             border: 10rem/$base solid #222;
             border-radius: 50%;
             position: relative;
@@ -66,7 +67,7 @@ $base: 75;
             margin-right: 36rem/$base;
             flex: none;
             &.ani{
-                animation: ani 1.4s alternate linear infinite;
+                animation: ani 1.4s alternate ease-out infinite;
             }
         }
         .all-money{

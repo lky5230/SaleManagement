@@ -6,12 +6,18 @@ export default new Vuex.Store({
   state: {
     //请求的所有数据
     data: {},
+    //请求成功
+    getSuccess: false,
     //全屏遮罩显示
     isMark: false,
     //购物车遮罩显示
     isShopShow: false,
     //购买列表
-    buyList:[]
+    buyList:[],
+    //单个的商品详情数据
+    goodsDetailsData: {},
+    //是否显示商品详情
+    isShowGoodsDetails: false,
   },
   getters: {
     //商品总价
@@ -35,6 +41,10 @@ export default new Vuex.Store({
     //初始请求所有数据
     getData (state, payload) {
       state.data = payload;
+    },
+    //初始请求成功
+    getDataSuccess(state, payload){
+        state.getSuccess = payload;
     },
     //改变遮罩显示
     changeMark(state, payload) {
@@ -90,13 +100,26 @@ export default new Vuex.Store({
         }
     },
     //底部购物车显示与否
-    changeShopShow(state){
-      state.isShopShow = !state.isShopShow;
+    changeShopShow(state, payload){
+      if(payload == undefined){
+        state.isShopShow = !state.isShopShow;
+      }else{
+        state.isShopShow = payload;
+      }
     },
     //清空购物车
     clearBuyList(state){
       state.buyList = [];
       state.isShopShow = false;
+    },
+    //展示商品详情
+    showGoodsDetails(state, payload){
+      state.isShowGoodsDetails = true;
+      state.goodsDetailsData = payload;
+    },
+    //关闭商品详情页
+    closeGoodsDetails(state){
+      state.isShowGoodsDetails = false;
     }
   },
   actions: {

@@ -10,11 +10,11 @@
       <div class="content">
         <router-view></router-view>
       </div>
-      
     </div>
     <fix-shop></fix-shop>
     <notice-mark @changeMark="$store.commit('changeMark', false)" :seller="$store.state.data.seller" :isShow="$store.state.isMark"></notice-mark>
     <order-list></order-list>
+    <goods-details></goods-details>
   </div>
 </template>
 
@@ -23,6 +23,7 @@ import vhead from '@/components/vhead'
 import noticeMark from '@/components/noticeMark'
 import fixShop from '@/components/fixShop'
 import orderList from '@/components/orderList'
+import goodsDetails from '@/components/goodsDetails'
 export default {
   name: 'app',
   data(){
@@ -36,6 +37,7 @@ export default {
     noticeMark,
     fixShop,
     orderList,
+    goodsDetails
   }
 }
 </script>
