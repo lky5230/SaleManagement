@@ -2,6 +2,7 @@
 
 > A Vue.js project
 
+``` 
 # install dependencies
 npm install
 
