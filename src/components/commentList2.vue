@@ -102,6 +102,7 @@ $base: 75;
             color: rgb(7, 17, 27);
             line-height: 1.5;
             margin-bottom: 16rem/$base;
+            @include font(24);
         }
         .badge{
             .badge-info{

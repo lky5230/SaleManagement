@@ -15,6 +15,11 @@ export default new Router({
       component: function(resolve){
         require(["@/components/judge"], resolve);
       }
+    },{
+      path: '/seller',
+      component: function(resolve){
+        require(["@/components/seller"], resolve);
+      }
     }
   ]
 })

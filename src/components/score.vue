@@ -7,7 +7,6 @@
 <script>
 import { scoreFormat } from '@/util/index.js'
 export default {
-    props: ["score"],
     props:{
         score:{},
         w:{

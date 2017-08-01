@@ -102,6 +102,7 @@ export default {
         this.scroll = new BS(this.$refs.judge, {
             startX: 0,
             startY: 0,
+            click: true,
             HWCompositing: true
         });
     }
